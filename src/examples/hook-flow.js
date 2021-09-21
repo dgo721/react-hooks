@@ -26,6 +26,8 @@ function Child() {
     }
   })
 
+  console.log('Child, after useEffect, after.')
+
   React.useEffect(() => {
     console.log(
       '%c    Child: useEffect(() => {}, [])',
@@ -39,6 +41,8 @@ function Child() {
     }
   }, [])
 
+  console.log('Child, after useEffect, once.')
+
   React.useEffect(() => {
     console.log('%c    Child: useEffect(() => {}, [count])', 'color: HotPink')
     return () => {
@@ -48,6 +52,8 @@ function Child() {
       )
     }
   }, [count])
+
+  console.log('Child, after useEffect, count.')
 
   const element = (
     <button onClick={() => setCount(previousCount => previousCount + 1)}>
@@ -75,6 +81,8 @@ function App() {
     }
   })
 
+  console.log('App, after useEffect, always.')
+
   React.useEffect(() => {
     console.log('%cApp: useEffect(() => {}, [])', 'color: MediumTurquoise')
     return () => {
@@ -85,6 +93,8 @@ function App() {
     }
   }, [])
 
+  console.log('App, after useEffect, once.')
+
   React.useEffect(() => {
     console.log('%cApp: useEffect(() => {}, [showChild])', 'color: HotPink')
     return () => {
@@ -94,6 +104,8 @@ function App() {
       )
     }
   }, [showChild])
+
+  console.log('App, after useEffect, showChild.')
 
   const element = (
     <>
