@@ -10,12 +10,9 @@ import { PokemonForm, fetchPokemon, PokemonInfoFallback, PokemonDataView } from 
 
 function PokemonInfo({pokemonName}) {
   // 🐨 Have state for the pokemon (null)
-  const [state, setState] = React.useState({
-    status: 'idle',
-    pokemon: null,
-    error: null,
-  });
-  const {status, pokemon, error} = state;
+  const [status, setStatus] = React.useState('idle');
+  const [pokemon, setPokemon] = React.useState(null);
+  const [error, setError] = React.useState(null);
 
   // 🐨 use React.useEffect where the callback should be called whenever the
   // pokemon name changes.
@@ -31,7 +28,9 @@ function PokemonInfo({pokemonName}) {
     if (!pokemonName) {
       return;
     }
-    setState({status: 'pending'});
+    setStatus('pending');
+    setPokemon(null);
+    setError(null);
     // async function effect() {
     //   const pokemon = await fetchPokemon(pokemonName);
     //   setPokemon(pokemon);
@@ -39,17 +38,25 @@ function PokemonInfo({pokemonName}) {
     // effect();
     fetchPokemon(pokemonName)
       .then(
-        pokemon => setState({status: 'resolved', pokemon})
+        pokemon => {
+          setPokemon(pokemon);
+          setStatus('resolved');
+        }
       )
       .catch(
-        error => setState({status: 'rejected', error})
+        error => {
+          setError(error);
+          setStatus('rejected');
+        },
       );
     // fetchPokemon(pokemonName).then(
     //   pokemon => {
-    //     setState({status: 'resolved', pokemon})
+    //     setPokemon(pokemon);
+    //     setStatus('resolved');
     //   },
     //   error => {
-    //     setState({status: 'rejected', error})
+    //     setError(error);
+    //     setStatus('rejected');
     //   },
     // );
   }, [pokemonName]);
@@ -72,8 +79,6 @@ function PokemonInfo({pokemonName}) {
   } else if (status === 'resolved') {
     return <PokemonDataView pokemon={pokemon} />
   }
-
-  throw new Error('This should be impossible');
 }
 
 function App() {
